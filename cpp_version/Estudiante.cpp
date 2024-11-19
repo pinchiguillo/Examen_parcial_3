@@ -47,6 +47,17 @@ void Estudiante::mostrarMaterias() const {
 
 // Métodos para gestionar asistencias
 void Estudiante::registrarAsistencia(const Asistencia& asis) {
+    // Verificar si la materia existe en el listado predefinido de materias
+    if (std::find(materiasDisponibles.begin(), materiasDisponibles.end(), asis.getMateria()) == materiasDisponibles.end()) {
+        throw std::runtime_error("La materia '" + asis.getMateria() + "' no existe en el listado de materias disponibles.");
+    }
+
+    // Verificar si el estudiante está inscrito en la materia
+    if (std::find(materias.begin(), materias.end(), asis.getMateria()) == materias.end()) {
+        throw std::runtime_error("El estudiante no está inscrito en la materia '" + asis.getMateria() + "'.");
+    }
+
+    // Si pasa ambas validaciones, registrar la asistencia
     asistencias.push_back(asis);
 }
 
