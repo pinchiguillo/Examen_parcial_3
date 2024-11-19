@@ -5,6 +5,12 @@
 #include <iostream>
 
 #include "Estudiante.h"
+#include "materias.h"
+
+// Listado predefinido de materias
+const std::vector<std::string> materiasDisponibles = {
+    "Matemáticas", "Física", "Química", "Historia", "Arte", "Biología", "Literatura", "Inglés"
+};
 
 int main() {
     // Creación de un objeto Estudiante
@@ -14,6 +20,7 @@ int main() {
     est1.agregarMateria("Matemáticas");
     est1.agregarMateria("Física");
     est1.agregarMateria("Química");
+    est1.agregarMateria("España");
 
     // Mostrar información del estudiante
     est1.mostrarEstudiante();

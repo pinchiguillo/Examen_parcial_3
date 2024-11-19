@@ -4,6 +4,7 @@
 
 #include "Estudiante.h"
 #include "Asistencia.h"
+#include "materias.h"
 
 #include <iostream>
 #include <string>
@@ -16,6 +17,13 @@ Estudiante::Estudiante(const std::string& nombre, int edad, float promedio)
 
 // Métodos para gestionar materias
 void Estudiante::agregarMateria(const std::string& materia) {
+    // Verificar si la materia está en la lista de materias disponibles
+    if (std::find(materiasDisponibles.begin(), materiasDisponibles.end(), materia) == materiasDisponibles.end()) {
+        // Si no está en la lista, lanzar una excepción
+        throw std::runtime_error("La materia '" + materia + "' no está disponible en la lista predefinida.");
+    }
+
+    // Agregar la materia a la lista del estudiante
     materias.push_back(materia);
 }
 

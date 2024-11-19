@@ -8,4 +8,5 @@ add_executable(Cpp_Version
         cpp_version/Estudiante.h
         cpp_version/Estudiante.cpp
         cpp_version/Asistencia.h
-        cpp_version/Asistencia.cpp)
+        cpp_version/Asistencia.cpp
+        cpp_version/materias.h)
