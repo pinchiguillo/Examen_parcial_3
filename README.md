@@ -48,13 +48,13 @@ Instrucciones para la Pregunta de Desarrollo de Código:
 
 (30%) Implementación de la estructura Estudiante:
 
-La estructura Estudiante está correctamente implementada tanto en C como en C++.
+- La estructura Estudiante está correctamente implementada tanto en C como en C++.
 (20%) Implementación de la función mostrarEstudiante():
 
-La función mostrarEstudiante() está correctamente implementada y muestra correctamente todos los campos de una instancia de Estudiante.
+- La función mostrarEstudiante() está correctamente implementada y muestra correctamente todos los campos de una instancia de Estudiante.
 (30%) Comparación entre las dos implementaciones:
 
-Se proporciona una comparación clara y correcta entre las implementaciones de C y C++.
+- Se proporciona una comparación clara y correcta entre las implementaciones de C y C++.
 (20%) Calidad del código:
 
 Todo el código está bien comentado, bien organizado, sigue buenas prácticas de programación y se compila sin errores ni advertencias en CLion.
@@ -64,54 +64,24 @@ Todos los códigos deben ser originales. Se utilizarán herramientas de detecci�
 El código debe estar bien documentado y organizado.
 Se debe incluir un archivo README con instrucciones sobre cómo compilar y ejecutar el programa.
 El código debe compilarse sin errores ni advertencias en CLion.
-Estructura del Estudiante:
 
-C++:
+## Componentes del desarrollo
+Implementar tanto en **C++** como en **C**
+- Implementa una estructura llamada Estudiante con los campos: nombre, edad, y promedio.
+- Desarrolla la función mostrarEstudiante() que muestre todos los campos de la estructura.
+- Añade a la estructura Estudiante una lista o vector de materias en las que está inscrito.
+- Implementa funciones para agregar, eliminar y mostrar estas materias.
+- Diseña una clase o estructura Asistencia que contenga: fecha, materia y estado (asistió, falta, tardanza).
+- Integra esta estructura con Estudiante y desarrolla funciones para registrar y mostrar la asistencia.
+- Manejo de Excepciones:
 
-Implementa una estructura llamada Estudiante con los campos: nombre, edad, y promedio.
-Desarrolla la función mostrarEstudiante() que muestre todos los campos de la estructura.
-C:
-
-Realiza una implementación equivalente en el lenguaje C.
-Comparativa:
-
-Discute las diferencias clave entre las dos implementaciones.
-Gestión de Materias:
-
-Dado que cada estudiante tiene un conjunto de materias, expande tu implementación para incluir la gestión de las mismas.
-
-C++:
-
-Añade a la estructura Estudiante una lista o vector de materias en las que está inscrito.
-Implementa funciones para agregar, eliminar y mostrar estas materias.
-C:
-
-Realiza una implementación equivalente en el lenguaje C.
-Registro de Asistencia:
-
-Es vital para la universidad llevar un control de la asistencia de sus estudiantes.
-
-C++:
-
-Diseña una clase o estructura Asistencia que contenga: fecha, materia y estado (asistió, falta, tardanza).
-Integra esta estructura con Estudiante y desarrolla funciones para registrar y mostrar la asistencia.
-C:
-
-Realiza una implementación equivalente en el lenguaje C.
-Manejo de Excepciones:
-
-El sistema debe ser capaz de manejar situaciones inesperadas, como errores en el formato de la fecha, materias no registradas, etc.
-
-C++:
-
-Implementa excepciones personalizadas para manejar estos escenarios.
-Demuestra su uso con bloques try, catch.
-C:
-
-Aunque C no tiene un sistema integrado de manejo de excepciones como C++, discute cómo podrías manejar errores y situaciones inesperadas en este lenguaje.
-Conclusión:
+## Conclusión:
 
 Con base en tu experiencia y las implementaciones desarrolladas:
 
-¿Cuál de los dos lenguajes consideras más adecuado para el proyecto del CGEA?
-¿Qué recomendaciones harías al equipo de desarrollo del CGEA para la siguiente fase del proyecto?
+### ¿Cuál de los dos lenguajes consideras más adecuado para el proyecto del CGEA?
+C++ es más adecuado para el proyecto debido a su soporte para programación orientada a objetos, manejo de excepciones, bibliotecas modernas, y su capacidad para gestionar datos complejos de forma eficiente.
+### ¿Qué recomendaciones harías al equipo de desarrollo del CGEA para la siguiente fase del proyecto?
+- Seguir una extructura lo mas modular posible, para fatilitar una mayor escalabilidad
+- Implementar control de excepciones como si el usuario fuera tu enemigo (lo es)
+- Crear un conjunto de reglas al inicio. Como el uso de camel_case...
