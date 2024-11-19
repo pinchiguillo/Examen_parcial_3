@@ -25,6 +25,8 @@ public:
     const std::string& getFecha() const;
     const std::string& getMateria() const;
     const std::string& getEstado() const;
+
+    void setFecha(const std::string& nuevaFecha);
 };
 
 #endif // ASISTENCIA_H

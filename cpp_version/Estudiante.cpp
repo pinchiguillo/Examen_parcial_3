@@ -13,7 +13,9 @@
 
 // Constructor
 Estudiante::Estudiante(const std::string& nombre, int edad, float promedio)
-    : nombre(nombre), edad(edad), promedio(promedio) {}
+    : edad(edad), promedio(promedio) {
+    setNombre(nombre); // Usa el setter para validar y asignar el nombre
+}
 
 // Métodos para gestionar materias
 void Estudiante::agregarMateria(const std::string& materia) {
@@ -69,6 +71,24 @@ int Estudiante::getEdad() const { return edad; }
 float Estudiante::getPromedio() const { return promedio; }
 
 // Setters
-void Estudiante::setNombre(const std::string& nuevoNombre) { nombre = nuevoNombre; }
-void Estudiante::setEdad(int nuevaEdad) { edad = nuevaEdad; }
-void Estudiante::setPromedio(float nuevoPromedio) { promedio = nuevoPromedio; }
+void Estudiante::setNombre(const std::string& nuevoNombre) {
+    if (!nuevoNombre.empty()) {
+        nombre = nuevoNombre;
+    } else {
+        throw std::invalid_argument("Error: El nombre no puede estar vacío.");
+    }
+}
+void Estudiante::setEdad(int nuevaEdad) {
+    if (nuevaEdad >= 0) {
+        edad = nuevaEdad;
+    } else {
+        throw std::invalid_argument("Error: La edad no puede ser negativa.");
+    }
+}
+void Estudiante::setPromedio(float nuevoPromedio) {
+    if (nuevoPromedio >= 0 && nuevoPromedio <= 10) {
+        promedio = nuevoPromedio;
+    } else {
+        throw std::invalid_argument("Error: La nota debe estar entre 0 y 10.");
+    }
+}
