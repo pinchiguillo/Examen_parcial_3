@@ -5,22 +5,14 @@
 #ifndef ASISTENCIA_H
 #define ASISTENCIA_H
 
-#include <stdbool.h> // Para usar el tipo booleano
-
-// Definición de la estructura Asistencia
 typedef struct {
-    char fecha[11];   // Formato YYYY-MM-DD
-    char materia[100];
-    char estado[50];  // "Asistió", "Falta", "Tardanza"
+    char fecha[11];
+    char materia[50];
+    char estado[20];
 } Asistencia;
-// Prototipos de funciones
-void initAsistencia(Asistencia* asistencia, const char* fecha, const char* materia, const char* estado);
-void mostrarAsistencia(const Asistencia* asistencia);
-void setFecha(Asistencia* asistencia, const char* nuevaFecha);
-const char* getFecha(const Asistencia* asistencia);
-const char* getMateria(const Asistencia* asistencia);
-const char* getEstado(const Asistencia* asistencia);
 
-bool validarFecha(const char* fecha);
+void inicializarAsistencia(Asistencia* asistencia, const char* fecha, const char* materia, const char* estado);
+void mostrarAsistencia(const Asistencia* asistencia);
+const char* getMateria(const Asistencia* asistencia);
 
 #endif // ASISTENCIA_H

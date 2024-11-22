@@ -1,146 +1,113 @@
 //
 // Created by alexa on 19/11/2024.
 //
-#include "Estudiantes.h"
-#include "Asistencia.h"
-#include "materias.h"
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
 
-// Constructor: Inicializa un estudiante con datos básicos
-void initEstudiante(Estudiante* estudiante, const char* nombre, int edad, float promedio) {
-    if (estudiante == NULL) return;
+#define MAX_MATERIAS 50
+#define MAX_ASISTENCIAS 100
 
-    setNombre(estudiante, nombre);
-    setEdad(estudiante, edad);
-    setPromedio(estudiante, promedio);
-    estudiante->numMaterias = 0;
-    estudiante->numAsistencias = 0;
+typedef struct {
+    char fecha[11];
+    char materia[50];
+    char estado[20];
+} Asistencia;
+
+typedef struct {
+    char nombre[50];
+    int edad;
+    float promedio;
+    char materias[MAX_MATERIAS][50];
+    int num_materias;
+    Asistencia asistencias[MAX_ASISTENCIAS];
+    int num_asistencias;
+} Estudiante;
+
+void inicializarEstudiante(Estudiante* estudiante, const char* nombre, int edad, float promedio) {
+    strncpy(estudiante->nombre, nombre, 50);
+    estudiante->edad = edad;
+    estudiante->promedio = promedio;
+    estudiante->num_materias = 0;
+    estudiante->num_asistencias = 0;
 }
 
-// Métodos para gestionar materias
+void mostrarEstudiante(const Estudiante* estudiante) {
+    printf("Nombre: %s, Edad: %d, Promedio: %.2f\n", estudiante->nombre, estudiante->edad, estudiante->promedio);
+}
+
 void agregarMateria(Estudiante* estudiante, const char* materia) {
-    if (estudiante == NULL || materia == NULL) return;
-
-    // Verificar si la materia está en la lista de materias disponibles
-    if (!materiaDisponible(materia)) {
-        fprintf(stderr, "Error: La materia '%s' no está disponible.\n", materia);
-        return;
-    }
-
-    // Verificar si ya está inscrita
-    for (int i = 0; i < estudiante->numMaterias; i++) {
-        if (strcmp(estudiante->materias[i], materia) == 0) {
-            fprintf(stderr, "Error: La materia '%s' ya está inscrita.\n", materia);
-            return;
-        }
-    }
-
-    // Agregar la materia si hay espacio
-    if (estudiante->numMaterias < MAX_MATERIAS) {
-        strcpy(estudiante->materias[estudiante->numMaterias], materia);
-        estudiante->numMaterias++;
+    if (estudiante->num_materias < MAX_MATERIAS) {
+        strncpy(estudiante->materias[estudiante->num_materias], materia, 50);
+        estudiante->num_materias++;
     } else {
-        fprintf(stderr, "Error: No se pueden inscribir más materias.\n");
+        fprintf(stderr, "No se pueden agregar más materias\n");
     }
 }
 
 void eliminarMateria(Estudiante* estudiante, const char* materia) {
-    if (estudiante == NULL || materia == NULL) return;
-
-    for (int i = 0; i < estudiante->numMaterias; i++) {
+    int found = 0;
+    for (int i = 0; i < estudiante->num_materias; i++) {
         if (strcmp(estudiante->materias[i], materia) == 0) {
-            // Desplazar las materias restantes hacia adelante
-            for (int j = i; j < estudiante->numMaterias - 1; j++) {
-                strcpy(estudiante->materias[j], estudiante->materias[j + 1]);
+            found = 1;
+            for (int j = i; j < estudiante->num_materias - 1; j++) {
+                strncpy(estudiante->materias[j], estudiante->materias[j + 1], 50);
             }
-            estudiante->numMaterias--;
-            return;
+            estudiante->num_materias--;
+            break;
         }
     }
-    printf("La materia '%s' no está inscrita.\n", materia);
+    if (!found) {
+        fprintf(stderr, "Materia no encontrada: %s\n", materia);
+    } else {
+        // Eliminar asistencias asociadas
+        for (int i = 0; i < estudiante->num_asistencias; ) {
+            if (strcmp(estudiante->asistencias[i].materia, materia) == 0) {
+                for (int j = i; j < estudiante->num_asistencias - 1; j++) {
+                    estudiante->asistencias[j] = estudiante->asistencias[j + 1];
+                }
+                estudiante->num_asistencias--;
+            } else {
+                i++;
+            }
+        }
+    }
 }
 
 void mostrarMaterias(const Estudiante* estudiante) {
-    if (estudiante == NULL) return;
-
-    printf("Materias inscritas por %s:\n", estudiante->nombre);
-    for (int i = 0; i < estudiante->numMaterias; i++) {
+    printf("Materias:\n");
+    for (int i = 0; i < estudiante->num_materias; i++) {
         printf("- %s\n", estudiante->materias[i]);
     }
 }
 
-// Métodos para gestionar asistencias
-void registrarAsistencia(Estudiante* estudiante, const Asistencia* asistencia) {
-    if (estudiante == NULL || asistencia == NULL) return;
-
-    // Verificar si la materia está disponible
-    if (!materiaDisponible(asistencia->materia)) {
-        fprintf(stderr, "Error: La materia '%s' no está disponible.\n", asistencia->materia);
-        return;
-    }
-
-    // Verificar si el estudiante está inscrito en la materia
-    bool inscrito = false;
-    for (int i = 0; i < estudiante->numMaterias; i++) {
-        if (strcmp(estudiante->materias[i], asistencia->materia) == 0) {
-            inscrito = true;
+void registrarAsistencia(Estudiante* estudiante, const char* fecha, const char* materia, const char* estado) {
+    int found = 0;
+    for (int i = 0; i < estudiante->num_materias; i++) {
+        if (strcmp(estudiante->materias[i], materia) == 0) {
+            found = 1;
             break;
         }
     }
-    if (!inscrito) {
-        fprintf(stderr, "Error: El estudiante no está inscrito en la materia '%s'.\n", asistencia->materia);
+    if (!found) {
+        fprintf(stderr, "Materia no encontrada: %s\n", materia);
         return;
     }
-
-    // Registrar la asistencia si hay espacio
-    if (estudiante->numAsistencias < MAX_ASISTENCIAS) {
-        estudiante->asistencias[estudiante->numAsistencias] = *asistencia;
-        estudiante->numAsistencias++;
+    if (estudiante->num_asistencias < MAX_ASISTENCIAS) {
+        strncpy(estudiante->asistencias[estudiante->num_asistencias].fecha, fecha, 11);
+        strncpy(estudiante->asistencias[estudiante->num_asistencias].materia, materia, 50);
+        strncpy(estudiante->asistencias[estudiante->num_asistencias].estado, estado, 20);
+        estudiante->num_asistencias++;
     } else {
-        fprintf(stderr, "Error: No se pueden registrar más asistencias.\n");
+        fprintf(stderr, "No se pueden registrar más asistencias\n");
     }
 }
 
 void mostrarAsistencias(const Estudiante* estudiante) {
-    if (estudiante == NULL) return;
-
-    printf("Registro de asistencias de %s:\n", estudiante->nombre);
-    for (int i = 0; i < estudiante->numAsistencias; i++) {
-        mostrarAsistencia(&estudiante->asistencias[i]);
+    printf("Asistencias:\n");
+    for (int i = 0; i < estudiante->num_asistencias; i++) {
+        printf("Fecha: %s, Materia: %s, Estado: %s\n",
+               estudiante->asistencias[i].fecha,
+               estudiante->asistencias[i].materia,
+               estudiante->asistencias[i].estado);
     }
 }
-
-// Métodos para mostrar datos del estudiante
-void mostrarEstudiante(const Estudiante* estudiante) {
-    if (estudiante == NULL) return;
-
-    printf("Nombre: %s\n", estudiante->nombre);
-    printf("Edad: %d\n", estudiante->edad);
-    printf("Promedio: %.2f\n", estudiante->promedio);
-    mostrarMaterias(estudiante);
-}
-
-// Getters
-const char* getNombre(const Estudiante* estudiante) {
-    return estudiante ? estudiante->nombre : NULL;
-}
-
-int getEdad(const Estudiante* estudiante) {
-    return estudiante ? estudiante->edad : -1;
-}
-
-float getPromedio(const Estudiante* estudiante) {
-    return estudiante ? estudiante->promedio : -1;
-}
-
-// Setters
-void setNombre(Estudiante* estudiante, const char* nuevoNombre) {
-    if (estudiante == NULL || nuevoNombre == NULL || strlen(nuevoNombre) == 0) {
-        fprintf(stderr, "Error: El nombre no puede estar vacío.\n");
-        return;
-    }
-    strncpy(estudiante->nombre, nuevoNombre, MAX_NOMBRE - 1);
-    estudiante->nombre[MAX_NOMBRE -
